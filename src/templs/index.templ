@@ -1,0 +1,111 @@
+package templs
+
+import "strconv"
+
+templ Index() {
+	<!DOCTYPE html>
+	<html>
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<script src="/static/tailwind.js"></script>
+			<script src="https://unpkg.com/htmx.org@2.0.0"></script>
+			<script src="/static/index.js"></script>
+		</head>
+		<body class="text-neutral-500 bg-neutral-400">
+			<div class="bg-neutral-100 h-full rounded overflow-clip shadow-xl">
+				@Header(HeaderText{"Satyam Patel"})
+				@Skills([]SkillsText{
+					{"Golang", 3},
+					{"Vue.js", 3},
+					{"TypeScript", 3},
+					{"HTMX", 1},
+					{"HTML", 4},
+					{"CSS", 4},
+					{"JavaScript", 4},
+					{"Advertising", 2},
+					{"VAST", 2},
+					{"Programmatic Advertising", 2},
+					{"Ad Waterfall", 2},
+					{"CTV", 2},
+					{"DOOH", 2},
+					{"VideoJS", 1},
+					{"Multimedia", 3},
+				})
+				@Experience()
+			</div>
+		</body>
+	</html>
+}
+
+type HeaderText struct {
+	Text string
+}
+
+templ Header(h HeaderText) {
+	<h1 class="p-3 font-thin text-4xl bg-neutral-300 flex flex-row justify-between">
+		<div>{ h.Text }</div>
+		<div class="text-lg flex flex-col justify-center">
+			<a
+				class="text-blue-600"
+				href="https://www.linkedin.com/in/satyam-patel-b386a31a0"
+			>https://www.linkedin.com/in/satyam-patel-b386a31a0</a>
+		</div>
+	</h1>
+}
+
+type SkillsText struct {
+	Name  string
+	Level int
+}
+
+templ H1(s string) {
+	<h1 class="text-3xl font-bold mb-2">{ s }</h1>
+}
+
+templ H2(s string) {
+	<h2 class="text-2xl font-bold mb-2">{ s }</h2>
+}
+
+templ H3(s string) {
+	<h3 class="text-xl font-bold mb-2">{ s }</h3>
+}
+
+templ Skills(s []SkillsText) {
+	<div class="p-3">
+		@H1("Skills")
+		<div class="flex flex-row justify-start flex-wrap gap-1">
+			for _, skill := range(s) {
+				<div class="flex flex-row gap-1 p-1 pl-2 pr-2 border hover:border-orange-500 hover:text-purple-500 transition-all">
+					<div>{ skill.Name }</div>
+					@Level(skill.Level)
+				</div>
+			}
+		</div>
+	</div>
+}
+
+func genLevelString(l int, m int) string {
+	a := "["
+	for i := 0; i < m; i++ {
+		if i == l-1 {
+			a += strconv.Itoa(l)
+		} else {
+			a += "-"
+		}
+	}
+	a += "]"
+
+	return a
+}
+
+templ Level(l int) {
+	<div>{ genLevelString(l, 5) }</div>
+}
+
+templ Experience() {
+	<div class="p-3">
+		@H1("Experience")
+		@H2("Subheading")
+	</div>
+}

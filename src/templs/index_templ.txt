@@ -1,0 +1,20 @@
+<!doctype html><html><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><script src=\"/static/tailwind.js\"></script><script src=\"https://unpkg.com/htmx.org@2.0.0\"></script><script src=\"/static/index.js\"></script></head><body class=\"text-neutral-500 bg-neutral-400\"><div class=\"bg-neutral-100 h-full rounded overflow-clip shadow-xl\">
+</div></body></html>
+<h1 class=\"p-3 font-thin text-4xl bg-neutral-300 flex flex-row justify-between\"><div>
+</div><div class=\"text-lg flex flex-col justify-center\"><a class=\"text-blue-600\" href=\"https://www.linkedin.com/in/satyam-patel-b386a31a0\">https://www.linkedin.com/in/satyam-patel-b386a31a0</a></div></h1>
+<h1 class=\"text-3xl font-bold mb-2\">
+</h1>
+<h2 class=\"text-2xl font-bold mb-2\">
+</h2>
+<h3 class=\"text-xl font-bold mb-2\">
+</h3>
+<div class=\"p-3\">
+<div class=\"flex flex-row justify-start flex-wrap gap-1\">
+<div class=\"flex flex-row gap-1 p-1 pl-2 pr-2 border hover:border-orange-500 hover:text-purple-500 transition-all\"><div>
+</div>
+</div>
+</div></div>
+<div>
+</div>
+<div class=\"p-3\">
+</div>

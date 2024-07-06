@@ -1,6 +1,7 @@
 package pages
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"strings"
@@ -18,15 +19,14 @@ type Page struct {
 }
 
 func New(p Page) {
+	fmt.Println("registering page: " + p.Path)
 	if AllPages == nil {
 		AllPages = make(Pages, 0)
 	}
 	AllPages = append(AllPages, p)
 }
 
-func InitializePages(ps Pages) *echo.Echo {
-	e := echo.New()
-
+func InitializePages(ps Pages, e *echo.Echo) *echo.Echo {
 	for _, p := range ps {
 		e.Add(
 			http.MethodGet,
