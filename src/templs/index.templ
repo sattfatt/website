@@ -4,7 +4,7 @@ import "strconv"
 
 templ Index() {
 	<!DOCTYPE html>
-	<html>
+	<html class="h-full">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -12,8 +12,8 @@ templ Index() {
 			<script src="https://unpkg.com/htmx.org@2.0.0"></script>
 			<script src="/static/index.js"></script>
 		</head>
-		<body class="text-neutral-500 bg-neutral-400">
-			<div class="bg-neutral-100 h-full rounded overflow-clip shadow-xl">
+		<body class="text-neutral-500 bg-neutral-400 font-mono p-3 h-full">
+			<div class="bg-neutral-100 h-full rounded-lg shadow-xl overflow-y-auto">
 				@Header(HeaderText{"Satyam Patel"})
 				@Skills([]SkillsText{
 					{"Golang", 3},
@@ -32,7 +32,63 @@ templ Index() {
 					{"VideoJS", 1},
 					{"Multimedia", 3},
 				})
-				@Experience()
+				@Experience(Experiences{
+					{
+						"Rockbot [current]",
+						"Software Engineer III",
+						"Architect, write, and maintain programatic advertising system and client side media playback systems",
+					},
+					{
+						"Rockbot",
+						"Software Engineer",
+						"Worked across the entire stack, implementing new features and fixing code",
+					},
+					{
+						"Rockbot",
+						"Software Engineer Intern",
+						"Created an automatic api documentation system",
+					},
+					{
+						"IdTech",
+						"Instructor",
+						"Taught Web development and game development to k-12 students",
+					},
+					{
+						"Scripps Institute of Oceanography",
+						"Engineering Aide",
+						"Assisted Electrical Engineer with various research and tooling tasks",
+					},
+				})
+				<div class="flex flex-row w-full">
+					@Project("Work Projects", Projects{
+						{
+							"Advertising Stack",
+							"Programatic advertising system with configurable waterfalls and detailed logging",
+						},
+						{
+							"HTML5 Caching",
+							"Client side caching system powered by indexeddb to reduce bandwith in Rockbot media playback systems",
+						},
+						{
+							"Client Side Ad Insertion",
+							"Client side system for inserting advertisements during ad breaks in live content",
+						},
+						{
+							"Dev Tools",
+							"HTMX powered application for streamlining command line tools in configurable workflow UIs",
+						},
+					})
+					@Project("Personal Projects", Projects{
+						{
+							"Interactive Math Classroom",
+							"Interactive virtual classroom environment built in the Unity game engine. Features 3D graphing, chat interaction, and more!",
+						},
+						{
+							"",
+							"Interactive math system built in Unity game engine used to aid a mathematics professor at Oklahoma State University during the COVID 19 pandemic",
+						},
+					})
+				</div>
 			</div>
 		</body>
 	</html>
@@ -43,13 +99,22 @@ type HeaderText struct {
 }
 
 templ Header(h HeaderText) {
-	<h1 class="p-3 font-thin text-4xl bg-neutral-300 flex flex-row justify-between">
-		<div>{ h.Text }</div>
-		<div class="text-lg flex flex-col justify-center">
+	<h1 class="p-3  bg-neutral-300 flex flex-row justify-between items-center top-0 sticky">
+		<div class="font-thin text-4xl">{ h.Text }</div>
+		<div class="flex flex-col text-[0.65rem] items-end">
+			<div>satyam.p.patel94@gmail.com</div>
+			<a
+				class="text-blue-600"
+				href="https://github.com/sattfatt"
+			>
+				https://www.github.com/sattfatt
+			</a>
 			<a
 				class="text-blue-600"
 				href="https://www.linkedin.com/in/satyam-patel-b386a31a0"
-			>https://www.linkedin.com/in/satyam-patel-b386a31a0</a>
+			>
+				https://www.linkedin.com/in/satyam-patel-b386a31a0
+			</a>
 		</div>
 	</h1>
 }
@@ -76,7 +141,7 @@ templ Skills(s []SkillsText) {
 		@H1("Skills")
 		<div class="flex flex-row justify-start flex-wrap gap-1">
 			for _, skill := range(s) {
-				<div class="flex flex-row gap-1 p-1 pl-2 pr-2 border hover:border-orange-500 hover:text-purple-500 transition-all">
+				<div class="flex flex-row gap-1 text-xs p-1 pl-2 pr-2 border border-neutral-300 hover:border-orange-500 hover:text-purple-500 transition-all border-dashed">
 					<div>{ skill.Name }</div>
 					@Level(skill.Level)
 				</div>
@@ -103,9 +168,52 @@ templ Level(l int) {
 	<div>{ genLevelString(l, 5) }</div>
 }
 
-templ Experience() {
+type Experiences []ExperienceNode
+
+type ExperienceNode struct {
+	Company string
+	Title   string
+	Subtext string
+}
+
+templ Experience(e Experiences) {
 	<div class="p-3">
 		@H1("Experience")
-		@H2("Subheading")
+		for i, n := range(e) {
+			<div>
+				<b>• { n.Company }</b>
+			</div>
+			<div>
+				<em>| { n.Title }</em>
+			</div>
+			<div>
+				| { n.Subtext }
+			</div>
+			if i < len(e) - 1 {
+				<div>|</div>
+			}
+		}
+	</div>
+}
+
+type Projects []ProjectNode
+type ProjectNode struct {
+	Name string
+	Desc string
+}
+
+templ Project(h string, p Projects) {
+	<div class="p-3 w-1/2">
+		@H1(h)
+		for _, n := range(p) {
+			<div>
+				<div>
+					<b>{ n.Name }</b>
+				</div>
+				<div>
+					{ n.Desc }
+				</div>
+			</div>
+		}
 	</div>
 }
