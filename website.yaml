@@ -1,0 +1,72 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: apps
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolio-app
+  namespace: apps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portfolio-app
+  template:
+    metadata:
+      labels:
+        app: portfolio-app
+    spec:
+      containers:
+        - name: portfolio-app
+          image: sattfatt/website:v1.2
+          ports:
+            - containerPort: 10000
+      imagePullSecrets:
+        - name: regcred
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portfolio-app-service
+  namespace: apps
+spec:
+  selector:
+    app: portfolio-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 10000 
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portfolio-app-ingress
+  namespace: apps
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret: basic-auth
+    nginx.ingress.kubernetes.io/auth-realm: "Authentication Required"
+
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - portfolio.satyam.cloud
+      secretName: portfolio-app-tls
+  rules:
+    - host: portfolio.satyam.cloud
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: portfolio-app-service
+                port:
+                  number: 80
+---
+
